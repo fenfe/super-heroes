@@ -94,3 +94,25 @@ The Backend Steps (Your Express Route):
 10. JSON.stringify() converts the array back into string data.
 11. fs.writeFile() saves the updated string over the old file.
 12. The backend sends back a 201 Created status code to the frontend to confirm success.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+what to install inside project folder
+
+// # 1. Create your new project folder and go inside it
+// mkdir my-new-app
+// cd my-new-app
+
+// # 2. Initialize your package.json file instantly
+// npm init -y
+
+// # 3. Install your full stack (Fast and bundle-free because of local cache!)
+// npm install express mongoose ejs method-override
+
+// # 4. Create your main files
+// echo > server.js
+// mkdir views
+// echo > views/index.ejs
+
+what to push and what to ignore
+>>> ignore do not upload the node_modules folder (you should always hide it using a .gitignore file).
