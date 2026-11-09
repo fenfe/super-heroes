@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const methodOverride = require('method-override'); 
+const path = require('path')
 
 const port = 3000;
 const app = express();
@@ -24,7 +25,7 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
-
+app.use(express.static(path.join(__dirname)));
 // 4. ROUTES
 app.get('/', async (req, res) => {
 try{
@@ -50,7 +51,8 @@ app.post('/addHero', async (req, res) => {
             powers : req.body.powers,
             movie : req.body.movie
         });
-        res.send(`${newHero.heroName} was just added!`);
+        
+        res.redirect('/');
     } catch (err) {
         console.error(err);
         res.status(500).send('Eish, something went wrong saving the hero');
@@ -60,20 +62,22 @@ app.post('/addHero', async (req, res) => {
 app.put('/updateHero', async(req, res) => {
     try {
         const targetId = req.body.id;
-        const updatedHero = await Superhero.findByIdAndUpdate(
-            targetId,
-            {
-                heroName : req.body.heroName,
-                alterEgo : req.body.alterEgo,
-                powers : req.body.powers,
-                movie : req.body.movie
-            },
-            {new : true}
-        );
-        if(!updatedHero) {
+        // fetch existing hero fro, database
+        const oldHero = await Superhero.findById(targetId);
+        
+        if(!oldHero) {
             return res.status(404).send('Eish, i cant find that id inside ur database');
         }
-        res.send(`Success! ${updatedHero.heroName} was updated in MongoDB offline!`);
+
+        const updatedHero = await Superhero.findByIdAndUpdate(targetId,{
+            heroName : req.body.heroName || oldHero.heroName,
+            alterEgo : req.body.alterEgo || oldHero.heroName,
+            powers : req.body.powers || oldHero.powers,
+            movie : req.body.movie || oldHero.movie
+        },
+        {new : true}
+        );
+        res.redirect('/');
     } catch(err) {
         console.error(err);
         res.status(500).send(`Something went wrong with the database update.`);
@@ -87,7 +91,7 @@ app.delete('/deleteHero', async (req, res) => {
         if(!deletedHero){
             return res.status(404).send('hero not found');
         }
-        res.send(`Success!!! ${deletedHero.heroName} was deleted from mongodb`);
+        res.redirect('/');
     } catch(err) {
         res.status(500).send('Delete failed');
     }
@@ -96,7 +100,10 @@ app.delete('/deleteHero', async (req, res) => {
 app.get('/viewHeroes', async (req, res)=> {
     try {
         const allHeroes = await Superhero.find({});
-        res.json(allHeroes);
+
+        // const message = req.query.msg || null;
+
+        res.render('index', { heroes : allHeroes})
     } catch (err) {
         console.error(err);
         res.status(500).send("Sorry, could not view data from mongodb");

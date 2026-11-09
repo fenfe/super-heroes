@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title> <!-- 👈 Injects a variable -->
-    <link rel="stylesheet" href="/views/styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-section">
@@ -13,42 +13,45 @@
    
     <h1>Welcome to the Hero Page</h1>
 
-    <!-- 👈 Regular JavaScript loop inside HTML -->
-    <!-- <% if (userLoggedIn) { %>
-        <p>Hello, Hero!</p>
-    <% } else { %>
-        <p>Please log in.</p>
-    <% } %> -->
 
     <form action="/addHero" method="POST" target="" >
-        <h1>create a hero</h1>
+        <h3>create a hero</h3>
         <input class="inputs" type="text" name="heroName" placeholder="Hero Name (e.g. Spider-Man)" required>
         <input class="inputs" type="text" name="alterEgo" placeholder="Real Name / Alter Ego (e.g. Peter Parker)">
         <input class="inputs" type="text" name="powers" placeholder="Powers (e.g. Web-slinging, Wall-crawling)">
         <input class="inputs" type="text" name="movie" placeholder="Debut Movie">
-        <button class="inputs" type="submit" class="btn-create">CREATE Hero</button>
+        <button class="inputs" type="submit" class="btn-create">Create Hero</button>
     </form> <br>
 
     <form action="/updateHero?_method=PUT" method="POST" target="">
-        <h1>update can be  done with unique id from mongodb</h1>
+        <h3>update can be  done with unique id from mongodb</h3>
 
         <label>Paste MongoDB ID: <input type="text" name="id" required></label>
-        <p>Type the new details below</p>
+        <h4>Type the new details below</h4>
         <input class="inputs" type="text" name="heroName" placeholder=" New Hero Name (e.g. Spider-Man)" required>
         <input class="inputs" type="text" name="alterEgo" placeholder="New Real Name / Alter Ego (e.g. Peter Parker)">
         <input class="inputs" type="text" name="powers" placeholder="New Powers (e.g. Web-slinging, Wall-crawling)">
         <input class="inputs" type="text" name="movie" placeholder="New Debut Movie">
-        <button class="inputs" type="submit" class="btn-create">update Hero</button>
+        <button class="inputs" type="submit" class="btn-create">Update Hero</button>
     </form><br>
 
     <form action="/deleteHero?_method=DELETE" method="POST" target="">
-        <h1>delete a hero</h1>
+        <h3>delete a hero</h3>
         <label>Paste MongoDB ID: <input type="text" name="id" required></label>
-        <button class="inputs" type="submit" class="btn-create">delete Hero</button>
+        <button id="delete" class="inputs" type="submit" class="btn-create">Delete Hero</button>
     </form>
 </div>
 <div class="right">
-
+    <h2>Current Heroes</h2>
+    <ul class="heroes">
+        <% for(let i = 0; i < heroes.length; i++) {%>
+            <li class="hero">
+                <span><%= heroes[i].heroName %></span>
+                <span>db id = <%= heroes[i].id %></span>
+                </li>
+                <% } %>
+            </ul>
+    </ul>
 </div>
 </div>
 </body>

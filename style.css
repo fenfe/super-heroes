@@ -1,0 +1,36 @@
+body {
+}
+.main-section {
+    display: flex;
+}
+.left , .right {
+    width: 50%;
+    text-align: center;
+}
+.right {
+    background-color: rgb(227, 233, 238);
+    text-align: left;
+    padding: 0 16px;
+}
+input {
+    padding: 8px 16px;
+    display: block;
+    margin: 5px;
+    width: 80%;
+}
+
+button {
+    padding: 10px 16px;
+    border: none;
+    background-color: green;
+    border-radius: 5px;
+    color: white;
+    margin: 16px 0;
+    width: 50%;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+#delete {
+    background-color: red;
+    /* margin-bottom: 24px; */
+}
