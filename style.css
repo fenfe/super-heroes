@@ -1,36 +1,360 @@
-body {
-}
-.main-section {
-    display: flex;
-}
-.left , .right {
-    width: 50%;
-    text-align: center;
-}
-.right {
-    background-color: rgb(227, 233, 238);
-    text-align: left;
-    padding: 0 16px;
-}
-input {
-    padding: 8px 16px;
-    display: block;
-    margin: 5px;
-    width: 80%;
+:root {
+    --bg-navy: #141829;
+    --bg-dots: #232946;
+    --panel-bg: #1e243b;
+    --card-bg: #fffffe;
+    --ink-black: #0f0e17;
+    --hero-yellow: #ffd166;
+    --hero-red: #ef476f;
+    --hero-cyan: #06d6a0;
+    --hero-blue: #38bdf8;
+    --text-light: #fffffe;
+    --text-muted: #b8c1ec;
 }
 
-button {
-    padding: 10px 16px;
-    border: none;
-    background-color: green;
-    border-radius: 5px;
-    color: white;
-    margin: 16px 0;
-    width: 50%;
-    font-weight: bold;
-    letter-spacing: 1px;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-#delete {
-    background-color: red;
-    /* margin-bottom: 24px; */
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg-navy);
+    /* Subtle Comic Book Halftone Polka-Dot Pattern */
+    background-image: radial-gradient(var(--bg-dots) 2px, transparent 2px);
+    background-size: 24px 24px;
+    color: var(--text-light);
+    line-height: 1.5;
+    padding-bottom: 3rem;
+}
+
+/* TOP COMIC HEADER */
+.top-banner {
+    background: linear-gradient(135deg, #ef476f 0%, #d90429 100%);
+    border-bottom: 4px solid var(--ink-black);
+    padding: 1.8rem 2rem;
+    text-align: center;
+    box-shadow: 0 6px 0 var(--ink-black);
+    margin-bottom: 2rem;
+}
+
+.badge-issue {
+    display: inline-block;
+    background-color: var(--hero-yellow);
+    color: var(--ink-black);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    padding: 4px 12px;
+    border: 2px solid var(--ink-black);
+    box-shadow: 3px 3px 0 var(--ink-black);
+    margin-bottom: 0.5rem;
+    transform: rotate(-1.5deg);
+}
+
+.top-banner h1 {
+    font-family: 'Bangers', cursive;
+    font-size: 3.4rem;
+    letter-spacing: 3px;
+    color: var(--hero-yellow);
+    text-shadow: 4px 4px 0 var(--ink-black);
+    line-height: 1.1;
+}
+
+.top-banner p {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+    margin-top: 0.8rem;
+
+}
+
+/* MAIN LAYOUT */
+.main-section {
+    display: flex;
+    max-width: 1350px;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 0 2rem;
+    align-items: flex-start;
+}
+
+.left {
+    width: 36%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.right {
+    width: 64%;
+}
+
+/* COMIC PANELS */
+.comic-panel {
+    background-color: var(--panel-bg);
+    border: 3px solid var(--ink-black);
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 7px 7px 0 var(--ink-black);
+    position: relative;
+}
+
+.panel-tag {
+    position: absolute;
+    top: -14px;
+    left: 18px;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1.5px;
+    font-size: 1rem;
+    padding: 2px 12px;
+    color: var(--ink-black);
+    border: 2px solid var(--ink-black);
+    box-shadow: 3px 3px 0 var(--ink-black);
+}
+
+.tag-yellow { background-color: var(--hero-yellow); }
+.tag-cyan { background-color: var(--hero-blue); }
+
+.comic-panel h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 1.5px;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+}
+
+.helper-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* INPUTS */
+.inputs {
+    width: 100%;
+    padding: 11px 14px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 2.5px solid var(--ink-black);
+    background-color: #121629;
+    color: var(--text-light);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.inputs:focus {
+    outline: none;
+    border-color: var(--hero-yellow);
+    box-shadow: 4px 4px 0 var(--hero-yellow);
+    transform: translate(-2px, -2px);
+}
+
+.id-input {
+    border-color: var(--hero-blue);
+    font-family: monospace;
+}
+
+/* COMIC BUTTONS */
+.btn-comic {
+    width: 100%;
+    padding: 12px;
+    border: 3px solid var(--ink-black);
+    border-radius: 8px;
+    font-family: 'Bangers', cursive;
+    font-size: 1.35rem;
+    letter-spacing: 1.5px;
+    color: var(--ink-black);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink-black);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-top: 0.4rem;
+}
+
+.btn-create { background-color: var(--hero-yellow); }
+.btn-update { background-color: var(--hero-blue); }
+
+.btn-comic:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink-black);
+}
+
+.btn-comic:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink-black);
+}
+
+/* ROSTER HEADER */
+.roster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--ink-black);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.roster-header h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    color: var(--hero-yellow);
+    text-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.hero-count {
+    background-color: var(--hero-cyan);
+    color: var(--ink-black);
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 2px solid var(--ink-black);
+    box-shadow: 3px 3px 0 var(--ink-black);
+    font-size: 0.9rem;
+}
+
+/* HERO CARDS GRID */
+.heroes {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.4rem;
+}
+
+/* Bright Comic-Book Page White Cards for high contrast */
+.hero {
+    background-color: var(--card-bg);
+    color: var(--ink-black);
+    border: 3px solid var(--ink-black);
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    box-shadow: 5px 5px 0 var(--ink-black);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.hero:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 9px 9px 0 var(--hero-yellow);
+}
+
+.hero-card-top {
+    border-bottom: 2px dashed #cbd5e1;
+    padding-bottom: 0.6rem;
+}
+
+.hero h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+    color: var(--hero-red);
+    text-shadow: 1.5px 1.5px 0 var(--ink-black);
+    margin-bottom: 0.25rem;
+}
+
+.debut-badge {
+    display: inline-block;
+    background-color: #f1f5f9;
+    border: 1.5px solid var(--ink-black);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.hero-details p {
+    font-size: 0.92rem;
+    margin-bottom: 0.3rem;
+    color: #1e293b;
+}
+
+.hero-details .label {
+    font-weight: 700;
+    color: var(--ink-black);
+}
+
+.hero-id {
+    font-size: 0.72rem;
+    color: #475569;
+    font-family: monospace;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: auto;
+    word-break: break-all;
+}
+
+/* CARD ACTION BUTTONS */
+.card-actions {
+    display: flex;
+    gap: 0.6rem;
+    padding-top: 0.5rem;
+}
+
+.inline-delete-form {
+    flex: 1;
+    display: flex;
+}
+
+.btn-small {
+    flex: 1;
+    padding: 8px 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: 2px solid var(--ink-black);
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink-black);
+    transition: transform 0.1s ease;
+}
+
+.btn-edit {
+    background-color: var(--hero-blue);
+    color: var(--ink-black);
+}
+
+.btn-card-delete {
+    width: 100%;
+    background-color: var(--hero-red);
+    color: #fff;
+}
+
+.btn-small:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ink-black);
+}
+
+/* Highlight animation when clicking Edit */
+.highlight-pulse {
+    animation: pulseBorder 0.8s ease;
+}
+
+@keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); }
+    70% { box-shadow: 0 0 0 14px rgba(56, 189, 248, 0); }
+    100% { box-shadow: 7px 7px 0 var(--ink-black); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 2px dashed var(--text-muted);
+    border-radius: 10px;
+    color: var(--text-muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .main-section {
+        flex-direction: column;
+    }
+    .left, .right {
+        width: 100%;
+    }
 }

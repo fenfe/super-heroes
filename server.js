@@ -3,20 +3,21 @@ const express = require('express');
 const methodOverride = require('method-override'); 
 const path = require('path')
 
-const port = 3000;
+const port = process.env.PORT || 3000;
+const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/superhero_db';
 const app = express();
 
 // 1. DATABASE CONNECTION
-mongoose.connect('mongodb://127.0.0.1:27017/superhero_db')
-    .then(() => console.log('connected to my offline mongodb successfully!'))
+mongoose.connect(dbURI)
+    .then(() => console.log('connected to mongodb successfully!'))
     .catch(err => console.error('connection failed', err));
 
 // 2. MONGOOSE SCHEMA & MODEL
 const superHeroSchema = new mongoose.Schema({
-    heroName : String,
-    alterEgo : String,
-    powers : String,
-    movie : String
+    heroName : {type: String, required: true, trim: true, maxlength: 50},
+    alterEgo : {type: String, trim: true, maxlength: 50},
+    powers : {type: String, trim: true, maxlength: 50},
+    movie : {type: String, trim: true, maxlength: 80}
 });
 const Superhero = mongoose.model('Superhero', superHeroSchema);
 
@@ -61,7 +62,7 @@ app.post('/addHero', async (req, res) => {
 
 app.put('/updateHero', async(req, res) => {
     try {
-        const targetId = req.body.id;
+        const targetId = req.body.id; //
         // fetch existing hero fro, database
         const oldHero = await Superhero.findById(targetId);
         
@@ -71,7 +72,7 @@ app.put('/updateHero', async(req, res) => {
 
         const updatedHero = await Superhero.findByIdAndUpdate(targetId,{
             heroName : req.body.heroName || oldHero.heroName,
-            alterEgo : req.body.alterEgo || oldHero.heroName,
+            alterEgo : req.body.alterEgo || oldHero.alterEgo,
             powers : req.body.powers || oldHero.powers,
             movie : req.body.movie || oldHero.movie
         },
@@ -97,20 +98,11 @@ app.delete('/deleteHero', async (req, res) => {
     }
 });
 
-app.get('/viewHeroes', async (req, res)=> {
-    try {
-        const allHeroes = await Superhero.find({});
-
-        // const message = req.query.msg || null;
-
-        res.render('index', { heroes : allHeroes})
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Sorry, could not view data from mongodb");
-    }
-});
-
 // 5. LISTEN (Keep this at the very bottom)
 app.listen(port, () => {
     console.log(`Server is alive on port ${port}`);
 });
+
+
+////////////////////////////////////////
+

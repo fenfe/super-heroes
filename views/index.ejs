@@ -3,56 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title> <!-- 👈 Injects a variable -->
+    <title>Hero Vault | All-Time SuperHeroes</title>
+    <!-- Google Fonts: Bangers for comic titles + Space Grotesk for crisp UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <header class="top-banner">
+        <div class="banner-inner">
+            <!-- <span class="badge-issue">ISSUE #01 • ALL-TIME ARCHIVES</span> -->
+            <h1>⚡ HERO-VAULT</h1>
+            <p>Recruit, upgrade, and manage Earth’s mightiest legends of all time.</p>
+        </div>
+    </header>
+
     <div class="main-section">
+        <!-- LEFT COLUMN: FORMS -->
         <div class="left">
 
-   
-    <h1>Welcome to the Hero Page</h1>
+            <!-- CREATE FORM -->
+            <form action="/addHero" method="POST" class="comic-panel panel-create">
+                <div class="panel-tag tag-yellow">NEW RECRUIT</div>
+                <h3>Create a Hero</h3>
+                <input class="inputs" type="text" name="heroName" placeholder="Hero Name (e.g. Spider-Man)" required>
+                <input class="inputs" type="text" name="alterEgo" placeholder="Alter Ego (e.g. Peter Parker)">
+                <input class="inputs" type="text" name="powers" placeholder="Powers (e.g. Web-slinging, Wall-crawling)">
+                <input class="inputs" type="text" name="movie" placeholder="Debut Movie">
+                <button class="btn-comic btn-create" type="submit">+ Add to Roster</button>
+            </form>
 
+            <!-- UPDATE FORM -->
+            <form action="/updateHero?_method=PUT" method="POST" class="comic-panel panel-update" id="updateForm">
+                <div class="panel-tag tag-cyan">POWER UP</div>
+                <h3>Update Hero</h3>
+                <p class="helper-text">Click <strong>"Edit"</strong> on any hero card to auto-fill their ID, or paste it below:</p>
+                
+                <input class="inputs id-input" type="text" id="updateId" name="id" placeholder="MongoDB Hero ID" required>
+                <input class="inputs" type="text" id="updateName" name="heroName" placeholder="New Hero Name">
+                <input class="inputs" type="text" id="updateAlterEgo" name="alterEgo" placeholder="New Alter Ego">
+                <input class="inputs" type="text" id="updatePowers" name="powers" placeholder="New Powers">
+                <input class="inputs" type="text" id="updateMovie" name="movie" placeholder="New Debut Movie">
+                <button class="btn-comic btn-update" type="submit">⚡ Save Changes</button>
+            </form>
 
-    <form action="/addHero" method="POST" target="" >
-        <h3>create a hero</h3>
-        <input class="inputs" type="text" name="heroName" placeholder="Hero Name (e.g. Spider-Man)" required>
-        <input class="inputs" type="text" name="alterEgo" placeholder="Real Name / Alter Ego (e.g. Peter Parker)">
-        <input class="inputs" type="text" name="powers" placeholder="Powers (e.g. Web-slinging, Wall-crawling)">
-        <input class="inputs" type="text" name="movie" placeholder="Debut Movie">
-        <button class="inputs" type="submit" class="btn-create">Create Hero</button>
-    </form> <br>
+        </div>
 
-    <form action="/updateHero?_method=PUT" method="POST" target="">
-        <h3>update can be  done with unique id from mongodb</h3>
+        <!-- RIGHT COLUMN: HERO ROSTER -->
+        <div class="right comic-panel panel-roster">
+            <div class="roster-header">
+                <h2>Wall Of Heroes</h2>
+                <span class="hero-count"><%= heroes.length %> Active</span>
+            </div>
 
-        <label>Paste MongoDB ID: <input type="text" name="id" required></label>
-        <h4>Type the new details below</h4>
-        <input class="inputs" type="text" name="heroName" placeholder=" New Hero Name (e.g. Spider-Man)" required>
-        <input class="inputs" type="text" name="alterEgo" placeholder="New Real Name / Alter Ego (e.g. Peter Parker)">
-        <input class="inputs" type="text" name="powers" placeholder="New Powers (e.g. Web-slinging, Wall-crawling)">
-        <input class="inputs" type="text" name="movie" placeholder="New Debut Movie">
-        <button class="inputs" type="submit" class="btn-create">Update Hero</button>
-    </form><br>
+            <% if (heroes.length === 0) { %>
+                <div class="empty-state">
+                    <h3>No Heroes Found!</h3>
+                    <p>The city needs a savior. Use the form on the left to create your first superhero!</p>
+                </div>
+            <% } %>
 
-    <form action="/deleteHero?_method=DELETE" method="POST" target="">
-        <h3>delete a hero</h3>
-        <label>Paste MongoDB ID: <input type="text" name="id" required></label>
-        <button id="delete" class="inputs" type="submit" class="btn-create">Delete Hero</button>
-    </form>
-</div>
-<div class="right">
-    <h2>Current Heroes</h2>
-    <ul class="heroes">
-        <% for(let i = 0; i < heroes.length; i++) {%>
-            <li class="hero">
-                <span><%= heroes[i].heroName %></span>
-                <span>db id = <%= heroes[i].id %></span>
-                </li>
+            <ul class="heroes">
+                <% for(let i = 0; i < heroes.length; i++) { %>
+                    <li class="hero">
+                        <div class="hero-card-top">
+                            <h3><%= heroes[i].heroName %></h3>
+                            <span class="debut-badge">🎬 <%= heroes[i].movie || 'Comic Origin' %></span>
+                        </div>
+                        
+                        <div class="hero-details">
+                            <p><span class="label">Alter Ego:</span> <%= heroes[i].alterEgo || 'Classified' %></p>
+                            <p><span class="label">Powers:</span> <%= heroes[i].powers || 'Unknown Abilities' %></p>
+                        </div>
+
+                        <div class="hero-id" title="MongoDB Document ID">
+                            ID: <%= heroes[i]._id %>
+                        </div>
+
+                        <div class="card-actions">
+                            <!-- Auto-fills the Update form without page reload -->
+                            <button type="button" class="btn-small btn-edit" 
+                                onclick="fillUpdateForm(
+                                    '<%= heroes[i]._id %>', 
+                                    `<%= heroes[i].heroName %>`, 
+                                    `<%= heroes[i].alterEgo || '' %>`, 
+                                    `<%= heroes[i].powers || '' %>`, 
+                                    `<%= heroes[i].movie || '' %>`
+                                )">
+                                ✏️ Edit
+                            </button>
+
+                            <!-- One-Click Delete with confirmation -->
+                            <form action="/deleteHero?_method=DELETE" method="POST" class="inline-delete-form" onsubmit="return confirm('Retire <%= heroes[i].heroName %> from the roster?');">
+                                <input type="hidden" name="id" value="<%= heroes[i]._id %>">
+                                <button type="submit" class="btn-small btn-card-delete">🗑️ Delete</button>
+                            </form>
+                        </div>
+                    </li>
                 <% } %>
             </ul>
-    </ul>
-</div>
-</div>
+        </div>
+    </div>
+
+    <!-- Tiny helper script so users don't have to manually copy-paste MongoDB IDs -->
+    <script src="/main.js"> </script>
 </body>
 </html>
